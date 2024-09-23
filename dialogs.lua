@@ -104,22 +104,22 @@ local function showChatGPTDialog(ui, highlightedText, message_history)
             chatgpt_viewer:update(result_text)
           end
 
-            local function handleAddToNote()
-              -- ui.highlight:addNote(result_text)
-              local index = ui.highlight:saveHighlight(true)
-              local a = ui.annotation.annotations[index]
-              a.note = result_text
-              ui:handleEvent(Event:new("AnnotationsModified",
+          local function handleAddToNote()
+            ui.highlight:addNote(result_text)
+            local index = ui.highlight:saveHighlight(true)
+            local a = ui.annotation.annotations[index]
+            a.note = result_text
+            ui:handleEvent(Event:new("AnnotationsModified",
                                     { a, nb_highlights_added = -1, nb_notes_added = 1 }))
 
-              UIManager:close(chatgpt_viewer)
-              ui.highlight:onClose()
-            end
+            UIManager:close(chatgpt_viewer)
+            ui.highlight:onClose()
+          end
                 
           local chatgpt_viewer = ChatGPTViewer:new {
             title = _("AskGPT"),
             text = result_text,
-            onAskQuestion = handleNewQuestion -- Pass the callback function
+            onAskQuestion = handleNewQuestion, -- Pass the callback function
             onAddToNote = handleAddToNote,
           }
 
